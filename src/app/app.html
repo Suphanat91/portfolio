@@ -38,7 +38,7 @@
 <main id="top">
   <section class="hero wrap">
     <div class="hero-text">
-      <p class="coords"><span class="ping"></span>13.36°N 100.98°E · {{ profile.location }}</p>
+      <p class="coords"><span class="ping"></span>{{ profile.location }}</p>
       <h1>
         <span class="line">Suphanat</span>
         <span class="line accent">Saradee</span>
@@ -141,8 +141,20 @@
     <div appReveal>
       <p class="big">Let's build software that runs in the real world.</p>
       <p>Open to full stack roles in Chonburi and the Eastern Seaboard, including onsite and shift work.</p>
-      <p class="email">{{ profile.email }}</p>
-      <a class="btn primary" href="mailto:{{ profile.email }}">Email me</a>
+      <dl class="contact-list">
+        <div>
+          <dt>Email</dt>
+          <dd>{{ profile.email }}</dd>
+        </div>
+        <div>
+          <dt>Phone</dt>
+          <dd>{{ profile.phone }}</dd>
+        </div>
+      </dl>
+      <div class="actions">
+        <a class="btn primary" href="mailto:{{ profile.email }}">Email me</a>
+        <a class="btn" href="tel:{{ profile.phoneIntl }}">Call {{ profile.phone }}</a>
+      </div>
     </div>
   </section>
 </main>

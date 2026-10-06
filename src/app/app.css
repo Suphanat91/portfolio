@@ -517,11 +517,25 @@ h3 {
   max-width: 20ch;
 }
 
-.email {
+.contact-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 48px;
+  margin: 8px 0 4px;
+}
+
+.contact-list dt {
+  font: 600 12px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.contact-list dd {
+  margin: 4px 0 0;
   font: 500 18px var(--mono);
   user-select: all;
   overflow-wrap: anywhere;
-  margin-bottom: 24px !important;
 }
 
 .foot {

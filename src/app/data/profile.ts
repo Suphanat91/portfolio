@@ -25,6 +25,8 @@ export const profile = {
   focus: 'Full Stack & Embedded',
   location: 'Chonburi, Thailand',
   email: 'suphanatsaradee@gmail.com',
+  phone: '095-431-6921',
+  phoneIntl: '+66954316921',
   intro:
     'I write C and C++ for NASA\'s core Flight System at GISTDA, build drone Remote ID systems, ' +
     'and ship mobile apps in React Native. Before that I built web apps with PHP, JavaScript and MySQL, ' +
