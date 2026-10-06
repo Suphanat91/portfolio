@@ -32,7 +32,7 @@ export const profile = {
   facts: [
     { value: '1 yr', label: 'at GISTDA' },
     { value: '3rd', label: 'ASEAN Geospatial Challenge 2025' },
-    { value: 'B.Eng.', label: 'Computer Engineering' },
+    { value: '3.84', label: 'GPA · First-class honours, Computer Engineering' },
   ],
 };
 
