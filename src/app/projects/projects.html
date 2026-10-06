@@ -1,0 +1,27 @@
+<div class="filters" role="group" aria-label="Filter projects by tag">
+  @for (tag of tags; track tag) {
+    <button type="button" [class.on]="active() === tag" [attr.aria-pressed]="active() === tag" (click)="active.set(tag)">
+      {{ tag }}
+    </button>
+  }
+</div>
+
+<div class="grid">
+  @for (p of visible(); track p.name) {
+    <article class="card" (pointermove)="spot($event)">
+      <header>
+        <h3>{{ p.name }}</h3>
+        @if (p.badge) {
+          <span class="badge">{{ p.badge }}</span>
+        }
+      </header>
+      <p class="period">{{ p.period }}</p>
+      <p>{{ p.summary }}</p>
+      <ul class="tags">
+        @for (t of p.tags; track t) {
+          <li>{{ t }}</li>
+        }
+      </ul>
+    </article>
+  }
+</div>

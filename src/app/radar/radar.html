@@ -1,0 +1,25 @@
+<div class="scope">
+  <canvas #scope aria-hidden="true"></canvas>
+</div>
+<div class="readout" aria-label="Simulated Remote ID contacts">
+  <div class="head">
+    <span class="live"></span>
+    Remote ID scan (demo) · {{ contacts().length }} contact{{ contacts().length === 1 ? '' : 's' }}
+  </div>
+  <table>
+    <tbody>
+      @for (c of contacts(); track c.id) {
+        <tr>
+          <td>{{ c.id }}</td>
+          <td>{{ c.bearing }}°</td>
+          <td>{{ c.range }} m</td>
+          <td>{{ c.alt }} m AGL</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4" class="idle">Scanning…</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
