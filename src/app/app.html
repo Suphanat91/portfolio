@@ -4,25 +4,29 @@
   <div class="bar-inner">
     <a class="brand" href="#top" (click)="menuOpen.set(false)">
       <img src="profile.jpg" alt="" width="32" height="32" />
-      <span>Suphanat<b>.</b></span>
+      <span>{{ lang() === 'th' ? 'ศุภณัฐ' : 'Suphanat' }}<b>.</b></span>
     </a>
 
     <nav id="site-nav" aria-label="Sections" [class.open]="menuOpen()">
       @for (n of nav; track n.id) {
-        <a [href]="'#' + n.id" [class.on]="activeSection() === n.id" (click)="menuOpen.set(false)">{{ n.label }}</a>
+        <a [href]="'#' + n.id" [class.on]="activeSection() === n.id" (click)="menuOpen.set(false)">{{ t(n.label) }}</a>
       }
     </nav>
 
     <div class="bar-actions">
-      <button type="button" class="icon-btn" (click)="toggleTheme()" [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'">
+      <div class="lang" role="group" [attr.aria-label]="t(ui.language)">
+        <button type="button" [class.on]="lang() === 'th'" [attr.aria-pressed]="lang() === 'th'" (click)="i18n.lang.set('th')" lang="th">ไทย</button>
+        <button type="button" [class.on]="lang() === 'en'" [attr.aria-pressed]="lang() === 'en'" (click)="i18n.lang.set('en')" lang="en">EN</button>
+      </div>
+      <button type="button" class="icon-btn" (click)="toggleTheme()" [attr.aria-label]="t(theme() === 'dark' ? ui.toLight : ui.toDark)">
         @if (theme() === 'dark') {
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" /><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8" /></svg>
         } @else {
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" /></svg>
         }
       </button>
-      <a class="btn primary small hide-sm" href="mailto:{{ profile.email }}">Hire me</a>
-      <button type="button" class="icon-btn menu-btn" (click)="menuOpen.update((v) => !v)" aria-controls="site-nav" [attr.aria-expanded]="menuOpen()" aria-label="Menu">
+      <a class="btn primary small hide-sm" href="mailto:{{ profile.email }}">{{ t(ui.hireMe) }}</a>
+      <button type="button" class="icon-btn menu-btn" (click)="menuOpen.update((v) => !v)" aria-controls="site-nav" [attr.aria-expanded]="menuOpen()" [attr.aria-label]="t(ui.menu)">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           @if (menuOpen()) {
             <path d="M6 6l12 12M18 6 6 18" />
@@ -38,22 +42,30 @@
 <main id="top">
   <section class="hero wrap">
     <div class="hero-text">
-      <p class="coords"><span class="ping"></span>{{ profile.location }}</p>
-      <h1>
-        <span class="line">Suphanat</span>
-        <span class="line accent">Saradee</span>
-      </h1>
-      <p class="name-th" lang="th">{{ profile.nameTh }}</p>
+      <p class="coords"><span class="ping"></span>{{ t(profile.location) }}</p>
+      @if (lang() === 'th') {
+        <h1 class="th">
+          <span class="line">ศุภณัฐ</span>
+          <span class="line accent">สารดี</span>
+        </h1>
+        <p class="name-alt" lang="en">{{ profile.name }}</p>
+      } @else {
+        <h1>
+          <span class="line">Suphanat</span>
+          <span class="line accent">Saradee</span>
+        </h1>
+        <p class="name-alt" lang="th">{{ profile.nameTh }}</p>
+      }
       <p class="role">{{ profile.role }} <span>· {{ profile.focus }}</span></p>
-      <p class="intro">{{ profile.intro }}</p>
+      <p class="intro">{{ t(profile.intro) }}</p>
       <div class="actions">
-        <a class="btn primary" href="mailto:{{ profile.email }}">Email me</a>
-        <a class="btn" href="#work">See my work</a>
+        <a class="btn primary" href="mailto:{{ profile.email }}">{{ t(ui.emailMe) }}</a>
+        <a class="btn" href="#work">{{ t(ui.seeWork) }}</a>
       </div>
     </div>
 
     <figure class="portrait">
-      <img src="profile.jpg" alt="Portrait of Suphanat Saradee" width="683" height="879" />
+      <img src="profile.jpg" [alt]="lang() === 'th' ? 'รูปของ ศุภณัฐ สารดี' : 'Portrait of Suphanat Saradee'" width="683" height="879" />
       <span class="corner tl"></span>
       <span class="corner tr"></span>
       <span class="corner bl"></span>
@@ -66,10 +78,10 @@
     </figure>
 
     <dl class="facts">
-      @for (f of profile.facts; track f.label) {
+      @for (f of profile.facts; track f.label.en) {
         <div>
-          <dt>{{ f.value }}</dt>
-          <dd>{{ f.label }}</dd>
+          <dt>{{ t(f.value) }}</dt>
+          <dd>{{ t(f.label) }}</dd>
         </div>
       }
     </dl>
@@ -78,35 +90,31 @@
   <section id="now" class="wrap section now">
     <app-radar appReveal />
     <div appReveal>
-      <h2>Now</h2>
-      <p class="big">Finding drones by the signals they broadcast.</p>
-      <p>
-        At GISTDA I work on Remote ID, which lets a drone broadcast who it is and where it is flying.
-        I build the components that pick up those broadcasts and a React Native app that shows nearby drones,
-        alongside flight software on NASA's core Flight System.
-      </p>
-      <p class="note">The radar is a simulation of what the scanner shows.</p>
+      <h2>{{ t(ui.nav.now) }}</h2>
+      <p class="big">{{ t(ui.nowTitle) }}</p>
+      <p>{{ t(ui.nowBody) }}</p>
+      <p class="note">{{ t(ui.nowNote) }}</p>
     </div>
   </section>
 
   <section id="work" class="wrap section">
-    <h2 appReveal>Work</h2>
-    <p class="lede" appReveal>Products, schematics, field tests and talks from my work at GISTDA.</p>
+    <h2 appReveal>{{ t(ui.nav.work) }}</h2>
+    <p class="lede" appReveal>{{ t(ui.workLede) }}</p>
     <app-gallery appReveal />
   </section>
 
   <section id="experience" class="wrap section">
-    <h2 appReveal>Experience</h2>
+    <h2 appReveal>{{ t(ui.nav.experience) }}</h2>
     <ol class="timeline">
-      @for (r of experience; track r.period) {
+      @for (r of experience; track r.period.en) {
         <li appReveal>
-          <div class="when">{{ r.period }}</div>
+          <div class="when">{{ t(r.period) }}</div>
           <div>
-            <h3>{{ r.title }}</h3>
-            <p class="org">{{ r.org }}</p>
+            <h3>{{ t(r.title) }}</h3>
+            <p class="org">{{ t(r.org) }}</p>
             <ul>
-              @for (pt of r.points; track pt) {
-                <li>{{ pt }}</li>
+              @for (pt of r.points; track pt.en) {
+                <li>{{ t(pt) }}</li>
               }
             </ul>
           </div>
@@ -116,16 +124,16 @@
   </section>
 
   <section id="projects" class="wrap section">
-    <h2 appReveal>Projects</h2>
+    <h2 appReveal>{{ t(ui.nav.projects) }}</h2>
     <app-projects appReveal />
   </section>
 
   <section id="skills" class="wrap section">
-    <h2 appReveal>Skills</h2>
+    <h2 appReveal>{{ t(ui.nav.skills) }}</h2>
     <div class="skills">
-      @for (g of skills; track g.name) {
+      @for (g of skills; track g.name.en) {
         <div appReveal>
-          <h3>{{ g.name }}</h3>
+          <h3>{{ t(g.name) }}</h3>
           <ul class="chips">
             @for (s of g.items; track s) {
               <li>{{ s }}</li>
@@ -137,29 +145,29 @@
   </section>
 
   <section id="contact" class="wrap section contact">
-    <h2 appReveal>Contact</h2>
+    <h2 appReveal>{{ t(ui.nav.contact) }}</h2>
     <div appReveal>
-      <p class="big">Let's build software that runs in the real world.</p>
-      <p>Open to full stack roles in Chonburi and the Eastern Seaboard, including onsite and shift work.</p>
+      <p class="big">{{ t(ui.contactBig) }}</p>
+      <p>{{ t(ui.contactBody) }}</p>
       <dl class="contact-list">
         <div>
-          <dt>Email</dt>
+          <dt>{{ t(ui.email) }}</dt>
           <dd>{{ profile.email }}</dd>
         </div>
         <div>
-          <dt>Phone</dt>
+          <dt>{{ t(ui.phone) }}</dt>
           <dd>{{ profile.phone }}</dd>
         </div>
       </dl>
       <div class="actions">
-        <a class="btn primary" href="mailto:{{ profile.email }}">Email me</a>
-        <a class="btn" href="tel:{{ profile.phoneIntl }}">Call {{ profile.phone }}</a>
+        <a class="btn primary" href="mailto:{{ profile.email }}">{{ t(ui.emailMe) }}</a>
+        <a class="btn" href="tel:{{ profile.phoneIntl }}">{{ t(ui.call) }} {{ profile.phone }}</a>
       </div>
     </div>
   </section>
 </main>
 
 <footer class="wrap foot">
-  <span>© {{ year }} {{ profile.name }}</span>
-  <span>Built with Angular</span>
+  <span>© {{ year }} {{ lang() === 'th' ? profile.nameTh : profile.name }}</span>
+  <span>{{ t(ui.builtWith) }}</span>
 </footer>

@@ -1,6 +1,7 @@
 import { Component, DestroyRef, afterNextRender, effect, inject, signal } from '@angular/core';
 import { experience, profile, skills } from './data/profile';
 import { Gallery } from './gallery/gallery';
+import { I18n, ui } from './i18n';
 import { Projects } from './projects/projects';
 import { Radar } from './radar/radar';
 import { Reveal } from './reveal';
@@ -29,13 +30,18 @@ export class App {
   protected readonly skills = skills;
   protected readonly year = new Date().getFullYear();
 
+  protected readonly i18n = inject(I18n);
+  protected readonly lang = this.i18n.lang;
+  protected readonly t = this.i18n.t;
+  protected readonly ui = ui;
+
   protected readonly nav = [
-    { id: 'now', label: 'Now' },
-    { id: 'work', label: 'Work' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'now', label: ui.nav.now },
+    { id: 'work', label: ui.nav.work },
+    { id: 'experience', label: ui.nav.experience },
+    { id: 'projects', label: ui.nav.projects },
+    { id: 'skills', label: ui.nav.skills },
+    { id: 'contact', label: ui.nav.contact },
   ];
   protected readonly activeSection = signal('');
   protected readonly progress = signal(0);

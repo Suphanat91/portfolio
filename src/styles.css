@@ -74,6 +74,11 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
+/* Wide letter-spacing suits uppercase English labels but breaks up Thai words */
+html[lang='th'] :is(h2, .eyebrow, .cat, .contact-list dt) {
+  letter-spacing: 0.02em;
+}
+
 /* Stop the page scrolling behind the photo viewer */
 html:has(dialog[open]) {
   overflow: hidden;

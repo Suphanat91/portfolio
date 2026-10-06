@@ -1,5 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { projects } from '../data/profile';
+import { I18n, ui } from '../i18n';
 
 @Component({
   selector: 'app-projects',
@@ -7,6 +8,8 @@ import { projects } from '../data/profile';
   styleUrl: './projects.css',
 })
 export class Projects {
+  protected readonly t = inject(I18n).t;
+  protected readonly ui = ui;
   protected readonly all = projects;
   protected readonly tags = ['All', ...new Set(projects.flatMap((p) => p.tags))];
   protected readonly active = signal('All');

@@ -1,4 +1,5 @@
 import { Component, DestroyRef, ElementRef, afterNextRender, inject, signal, viewChild } from '@angular/core';
+import { I18n, ui } from '../i18n';
 
 interface Blip {
   id: string;
@@ -38,6 +39,8 @@ function makeBlips(): Blip[] {
   styleUrl: './radar.css',
 })
 export class Radar {
+  protected readonly t = inject(I18n).t;
+  protected readonly ui = ui;
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('scope');
   protected readonly contacts = signal<Contact[]>([]);
 

@@ -1,33 +1,33 @@
 <div class="toolbar">
-  <div class="tabs" role="tablist" aria-label="Filter work by category">
+  <div class="tabs" role="tablist" [attr.aria-label]="t(ui.nav.work)">
     <button type="button" role="tab" [attr.aria-selected]="filter() === 'all'" [class.on]="filter() === 'all'" (click)="setFilter('all')">
-      All <span>{{ counts().get('all') }}</span>
+      {{ t(ui.all) }} <span>{{ counts().get('all') }}</span>
     </button>
     @for (c of tabs; track c.id) {
       <button type="button" role="tab" [attr.aria-selected]="filter() === c.id" [class.on]="filter() === c.id" (click)="setFilter(c.id)">
-        {{ c.label }} <span>{{ counts().get(c.id) }}</span>
+        {{ t(c.label) }} <span>{{ counts().get(c.id) }}</span>
       </button>
     }
   </div>
-  <span class="hint">Click a photo to view it full screen</span>
+  <span class="hint">{{ t(ui.galleryHint) }}</span>
 </div>
 
 @if (featured(); as f) {
   <article class="feature">
-    <button type="button" class="feature-media" (click)="open(f)" [attr.aria-label]="'Open ' + f.title">
-      <img [src]="src(f)" [alt]="f.title" [width]="f.width" [height]="f.height" />
+    <button type="button" class="feature-media" (click)="open(f)" [attr.aria-label]="t(ui.open) + ' ' + t(f.title)">
+      <img [src]="src(f)" [alt]="t(f.title)" [width]="f.width" [height]="f.height" />
     </button>
     <div class="feature-body">
-      <span class="eyebrow">Featured · {{ label(f.category) }}</span>
-      <h3>{{ f.title }}</h3>
-      <p>{{ f.caption }}</p>
+      <span class="eyebrow">{{ t(ui.featured) }} · {{ label(f.category) }}</span>
+      <h3>{{ t(f.title) }}</h3>
+      <p>{{ t(f.caption) }}</p>
       <ul class="feature-tags">
         <li>React Native</li>
         <li>Remote ID</li>
         <li>Hardware</li>
       </ul>
       <button type="button" class="feature-link" (click)="open(f)">
-        View photo
+        {{ t(ui.viewPhoto) }}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
       </button>
     </div>
@@ -37,11 +37,11 @@
 <div class="rows-wrap" [class.collapsed]="collapsible() && !expanded()">
   <div class="rows">
     @for (item of grid(); track item.file + filter()) {
-      <button type="button" class="ph" [style.--ar]="ratio(item)" (click)="open(item)" [attr.aria-label]="'Open ' + item.title">
-        <img [src]="src(item, true)" [alt]="item.title" [width]="item.width" [height]="item.height" loading="lazy" decoding="async" />
+      <button type="button" class="ph" [style.--ar]="ratio(item)" (click)="open(item)" [attr.aria-label]="t(ui.open) + ' ' + t(item.title)">
+        <img [src]="src(item, true)" [alt]="t(item.title)" [width]="item.width" [height]="item.height" loading="lazy" decoding="async" />
         <span class="ph-cap">
           <span class="cat">{{ label(item.category) }}</span>
-          <span class="t">{{ item.title }}</span>
+          <span class="t">{{ t(item.title) }}</span>
         </span>
       </button>
     }
@@ -51,42 +51,42 @@
 @if (collapsible()) {
   <div class="more">
     <button type="button" (click)="expanded.update((v) => !v)" [attr.aria-expanded]="expanded()">
-      {{ expanded() ? 'Show less' : 'Show all ' + visible().length + ' photos' }}
+      {{ expanded() ? t(ui.showLess) : t(ui.showAll).replace('{n}', '' + visible().length) }}
     </button>
   </div>
 }
 
-<dialog #lightbox class="lb" (keydown)="onKey($event)" (close)="openIndex.set(null)" aria-label="Photo viewer">
+<dialog #lightbox class="lb" (keydown)="onKey($event)" (close)="openIndex.set(null)" [attr.aria-label]="t(ui.viewer)">
   @if (current(); as item) {
     <div class="lb-top">
       <span class="count">{{ (openIndex() ?? 0) + 1 }} / {{ visible().length }}</span>
-      <button type="button" class="lb-btn" (click)="close()" aria-label="Close">
+      <button type="button" class="lb-btn" (click)="close()" [attr.aria-label]="t(ui.close)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
       </button>
     </div>
 
     <div class="lb-stage" (pointerdown)="swipeStart($event)" (pointerup)="swipeEnd($event)" (click)="$event.target === $event.currentTarget && close()">
-      <button type="button" class="lb-btn lb-arrow prev" (click)="step(-1)" aria-label="Previous photo">
+      <button type="button" class="lb-btn lb-arrow prev" (click)="step(-1)" [attr.aria-label]="t(ui.prev)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
       </button>
       @for (shown of [item]; track shown.file) {
-        <img class="lb-img" [src]="src(shown)" [alt]="shown.title" draggable="false" />
+        <img class="lb-img" [src]="src(shown)" [alt]="t(shown.title)" draggable="false" />
       }
-      <button type="button" class="lb-btn lb-arrow next" (click)="step(1)" aria-label="Next photo">
+      <button type="button" class="lb-btn lb-arrow next" (click)="step(1)" [attr.aria-label]="t(ui.next)">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
       </button>
     </div>
 
     <div class="lb-cap">
       <span class="cat">{{ label(item.category) }}</span>
-      <h3>{{ item.title }}</h3>
-      <p>{{ item.caption }}</p>
+      <h3>{{ t(item.title) }}</h3>
+      <p>{{ t(item.caption) }}</p>
     </div>
 
     <div class="lb-thumbs" #thumbs>
-      @for (t of visible(); track t.file; let i = $index) {
-        <button type="button" [class.on]="i === openIndex()" (click)="go(i)" [attr.aria-label]="'Show ' + t.title">
-          <img [src]="src(t, true)" alt="" loading="lazy" />
+      @for (th of visible(); track th.file; let i = $index) {
+        <button type="button" [class.on]="i === openIndex()" (click)="go(i)" [attr.aria-label]="t(th.title)">
+          <img [src]="src(th, true)" alt="" loading="lazy" />
         </button>
       }
     </div>

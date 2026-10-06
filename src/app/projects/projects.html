@@ -1,25 +1,25 @@
-<div class="filters" role="group" aria-label="Filter projects by tag">
+<div class="filters" role="group" [attr.aria-label]="t(ui.nav.projects)">
   @for (tag of tags; track tag) {
     <button type="button" [class.on]="active() === tag" [attr.aria-pressed]="active() === tag" (click)="active.set(tag)">
-      {{ tag }}
+      {{ tag === 'All' ? t(ui.all) : tag }}
     </button>
   }
 </div>
 
 <div class="grid">
-  @for (p of visible(); track p.name) {
+  @for (p of visible(); track p.name.en) {
     <article class="card" (pointermove)="spot($event)">
       <header>
-        <h3>{{ p.name }}</h3>
+        <h3>{{ t(p.name) }}</h3>
         @if (p.badge) {
-          <span class="badge">{{ p.badge }}</span>
+          <span class="badge">{{ t(p.badge) }}</span>
         }
       </header>
-      <p class="period">{{ p.period }}</p>
-      <p>{{ p.summary }}</p>
+      <p class="period">{{ t(p.period) }}</p>
+      <p>{{ t(p.summary) }}</p>
       <ul class="tags">
-        @for (t of p.tags; track t) {
-          <li>{{ t }}</li>
+        @for (tag of p.tags; track tag) {
+          <li>{{ tag }}</li>
         }
       </ul>
     </article>

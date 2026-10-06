@@ -1,5 +1,6 @@
-import { Component, ElementRef, computed, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { CATEGORIES, Category, GalleryItem, gallery } from '../data/gallery';
+import { I18n, ui } from '../i18n';
 
 type Filter = Category | 'all';
 
@@ -9,6 +10,8 @@ type Filter = Category | 'all';
   styleUrl: './gallery.css',
 })
 export class Gallery {
+  protected readonly t = inject(I18n).t;
+  protected readonly ui = ui;
   protected readonly items = gallery;
   protected readonly tabs = CATEGORIES.filter((c) => this.items.some((i) => i.category === c.id));
   protected readonly filter = signal<Filter>('all');
@@ -51,7 +54,8 @@ export class Gallery {
   }
 
   protected label(id: Category) {
-    return CATEGORIES.find((c) => c.id === id)?.label ?? id;
+    const category = CATEGORIES.find((c) => c.id === id);
+    return category ? this.t(category.label) : id;
   }
 
   protected src(item: GalleryItem, small = false) {
