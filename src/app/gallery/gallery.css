@@ -291,7 +291,7 @@
   margin: 0;
   padding: 0;
   border: 0;
-  background: rgba(5, 10, 14, 0.96);
+  background: #060b0f;
   color: #eef4f7;
 }
 
@@ -357,15 +357,23 @@
   display: grid;
   place-items: center;
   min-height: 0;
-  padding: 0 72px;
+  padding: 8px 96px;
   touch-action: pan-y;
 }
 
+/* Sized from the viewport: a % max-height can't resolve inside the grid row, so the photo would show at full size. */
 .lb-img {
-  max-width: 100%;
-  max-height: 100%;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 1100px);
+  max-height: calc(100dvh - 300px);
   object-fit: contain;
-  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: #121a20;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
   user-select: none;
   animation: img-in 0.3s ease-out;
 }
@@ -485,7 +493,12 @@
     flex: none;
   }
   .lb-stage {
-    padding: 0 8px;
+    padding: 8px 16px;
+  }
+  .lb-img {
+    max-height: calc(100dvh - 320px);
+    padding: 6px;
+    border-radius: 10px;
   }
   .lb-arrow {
     display: none;
